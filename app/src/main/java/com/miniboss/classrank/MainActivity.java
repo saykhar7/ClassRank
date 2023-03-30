@@ -10,13 +10,15 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView email = (TextView) findViewById(R.id.email);
-    TextView password = (TextView) findViewById(R.id.password);
 
-    Button login = (Button) findViewById(R.id.signInButton);
 
-    public void click(View view)
+    public void clickInfo(View view)
     {
+
+        TextView email = (TextView) findViewById(R.id.email);
+        TextView password = (TextView) findViewById(R.id.password);
+
+        Button login = (Button) findViewById(R.id.signInButton);
 
         Log.i("Info", "Sign in Button Clicked");
     }
