@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "560639185078",
+    "project_id": "classrankcsulb",
+    "storage_bucket": "classrankcsulb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:560639185078:android:0ea1899da34c4f5454d617",
+        "android_client_info": {
+          "package_name": "com.miniboss.classrank"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "560639185078-rc4uk8ppdrt09lu7i8foeiq4mviau5jp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.miniboss.classrank",
+            "certificate_hash": "5380f9fa9b42f64be4f439e1401920bc4e734e60"
+          }
+        },
+        {
+          "client_id": "560639185078-el39i56hdjafh6lk0kso180flje6bdee.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDBeOwKTq1c_shP_rroM0AmLsuNtZDiV7s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "560639185078-el39i56hdjafh6lk0kso180flje6bdee.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
