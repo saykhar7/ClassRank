@@ -28,16 +28,22 @@ public class SignInActivity extends AppCompatActivity {
         passwordEditText = findViewById(R.id.password);
 
         Button signInButton = findViewById(R.id.signInButton);
-        signInButton.setOnClickListener(v -> {
-            String email = emailEditText.getText().toString().trim();
-            String password = passwordEditText.getText().toString().trim();
-            signIn(email, password);
+        signInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String email = emailEditText.getText().toString().trim();
+                String password = passwordEditText.getText().toString().trim();
+                signIn(email, password);
+            }
         });
 
         TextView signUpLink = findViewById(R.id.signUpLink);
-        signUpLink.setOnClickListener(v -> {
-            Intent intent = new Intent(SignInActivity.this, SignUpActivity.class);
-            startActivity(intent);
+        signUpLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SignInActivity.this, SignUpActivity.class);
+                startActivity(intent);
+            }
         });
     }
 
@@ -67,13 +73,16 @@ public class SignInActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseAuth.getInstance().addAuthStateListener(firebaseAuth -> {
-            FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-            if (currentUser != null) {
-                Intent intent = new Intent(SignInActivity.this, HomeActivity.class);
-                intent.putExtra("user_id", currentUser.getUid());
-                startActivity(intent);
-                finish(); // To prevent returning to the SignInActivity when pressing the back button
+        FirebaseAuth.getInstance().addAuthStateListener(new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+                if (currentUser != null) {
+                    Intent intent = new Intent(SignInActivity.this, HomeActivity.class);
+                    intent.putExtra("user_id", currentUser.getUid());
+                    startActivity(intent);
+                    finish(); // To prevent returning to the SignInActivity when pressing the back button
+                }
             }
         });
     }
