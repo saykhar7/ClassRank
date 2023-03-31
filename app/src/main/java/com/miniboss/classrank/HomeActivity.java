@@ -29,26 +29,26 @@ public class HomeActivity extends AppCompatActivity implements HomeFragment.Home
         mFirestore = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
 
-        viewPager = findViewById(R.id.viewPager);
+       // viewPager = findViewById(R.id.viewPager);
         viewPagerAdapter = new ViewPagerAdapter(this);
         viewPager.setAdapter(viewPagerAdapter);
         viewPager.setUserInputEnabled(false);
 
-        BottomNavigationView bottomNavigation = findViewById(R.id.bottom_navigation);
-        bottomNavigation.setOnNavigationItemSelectedListener(item -> {
-            switch (item.getItemId()) {
-                case R.id.navigation_home:
-                    viewPager.setCurrentItem(0);
-                    return true;
-                case R.id.navigation_search:
-                    viewPager.setCurrentItem(1);
-                    return true;
-                case R.id.navigation_profile:
-                    viewPager.setCurrentItem(2);
-                    return true;
-            }
-            return false;
-        });
+//        BottomNavigationView bottomNavigation = findViewById(R.id.bottom_navigation);
+//        bottomNavigation.setOnNavigationItemSelectedListener(item -> {
+//            switch (item.getItemId()) {
+//                case R.id.navigation_home:
+//                    viewPager.setCurrentItem(0);
+//                    return true;
+//                case R.id.navigation_search:
+//                    viewPager.setCurrentItem(1);
+//                    return true;
+//                case R.id.navigation_profile:
+//                    viewPager.setCurrentItem(2);
+//                    return true;
+//            }
+//            return false;
+//        });
 
         String userId = getIntent().getStringExtra("user_id");
 

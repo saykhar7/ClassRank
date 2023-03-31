@@ -3,6 +3,9 @@ package com.miniboss.classrank;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PatternMatcher;
+import android.text.TextUtils;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -45,12 +48,61 @@ public class SignUpActivity extends AppCompatActivity {
                 String email = emailEdit.getText().toString().trim();
                 String password = passwordEdit.getText().toString().trim();
                 String confirmPassword = confirmPasswordEdit.getText().toString().trim();
+                
+                if(TextUtils.isEmpty(firstName))
+                {
+                    Toast.makeText(SignUpActivity.this, "Please enter your first name", Toast.LENGTH_LONG).show();
+                    firstNameEdit.setError("First Name Required");
+                    firstNameEdit.requestFocus();
+                } else if (TextUtils.isEmpty(lastName)) {
+                    Toast.makeText(SignUpActivity.this, "Please enter your last name", Toast.LENGTH_LONG).show();
+                    lastNameEdit.setError("Last Name Required");
+                    lastNameEdit.requestFocus();
+                    
+                } else if (TextUtils.isEmpty(email)) {
+                    Toast.makeText(SignUpActivity.this, "Please enter your full email", Toast.LENGTH_LONG).show();
+                   emailEdit.setError("Email Required");
+                    emailEdit.requestFocus();
+                    
+                } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                    Toast.makeText(SignUpActivity.this, "Please entter correct email in form example@domain.com", Toast.LENGTH_SHORT).show();
+                    emailEdit.setError("Correct Email Required");
+                    emailEdit.requestFocus();
+                    
 
-                if (password.equals(confirmPassword)) {
-                    signUpUser(firstName, lastName, email, password);
-                } else {
-                    Toast.makeText(SignUpActivity.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
+                } else if (TextUtils.isEmpty(password)) {
+                    Toast.makeText(SignUpActivity.this,"Password required", Toast.LENGTH_SHORT).show();
+                    passwordEdit.setError("Enter password");
+                    passwordEdit.requestFocus();
+                    
+                } else if (TextUtils.isEmpty(confirmPassword)) {
+                    Toast.makeText(SignUpActivity.this,"Password required", Toast.LENGTH_SHORT).show();
+                    confirmPasswordEdit.setError("Enter password");
+                    confirmPasswordEdit.requestFocus();
+                } else if (password.length()<8) {
+                    Toast.makeText(SignUpActivity.this, "Password should be more than 8 char", Toast.LENGTH_SHORT).show();
+                    passwordEdit.setError("8 or more char required");
+                    passwordEdit.requestFocus();
+
+                } else if (!password.equals(confirmPassword)) {
+                    Toast.makeText(SignUpActivity.this, "Password should be matched", Toast.LENGTH_SHORT).show();
+                    confirmPasswordEdit.setError("Password do not match");
+                    confirmPasswordEdit.requestFocus();
+                    confirmPasswordEdit.clearComposingText();
+                    passwordEdit.clearComposingText();
+
                 }
+                else{
+                    signUpUser(firstName, lastName, email, password);
+                }
+
+//                if(email.)
+//
+//                if (password.equals(confirmPassword)) {
+//
+//                } else {
+//                    Toast.makeText(SignUpActivity.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
+//                }
             }
         });
 
