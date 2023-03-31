@@ -151,7 +151,10 @@ public class SignUpActivity extends AppCompatActivity {
 
                     Intent intent = new Intent(SignUpActivity.this, HomeActivity.class);
                     intent.putExtra("user_id", userId);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
+
+
                 })
                 .addOnFailureListener(e -> {
                     Toast.makeText(SignUpActivity.this, "Failed to save user data. Please try again.", Toast.LENGTH_SHORT).show();

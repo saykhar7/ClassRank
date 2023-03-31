@@ -29,7 +29,7 @@ public class HomeActivity extends AppCompatActivity implements HomeFragment.Home
         mFirestore = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
 
-       // viewPager = findViewById(R.id.viewPager);
+        viewPager = findViewById(R.id.viewPager);
         viewPagerAdapter = new ViewPagerAdapter(this);
         viewPager.setAdapter(viewPagerAdapter);
         viewPager.setUserInputEnabled(false);
