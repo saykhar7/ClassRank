@@ -48,7 +48,7 @@ public class SignUpActivity extends AppCompatActivity {
                 String email = emailEdit.getText().toString().trim();
                 String password = passwordEdit.getText().toString().trim();
                 String confirmPassword = confirmPasswordEdit.getText().toString().trim();
-                
+
                 if(TextUtils.isEmpty(firstName))
                 {
                     Toast.makeText(SignUpActivity.this, "Please enter your first name", Toast.LENGTH_LONG).show();
@@ -58,23 +58,28 @@ public class SignUpActivity extends AppCompatActivity {
                     Toast.makeText(SignUpActivity.this, "Please enter your last name", Toast.LENGTH_LONG).show();
                     lastNameEdit.setError("Last Name Required");
                     lastNameEdit.requestFocus();
-                    
+
                 } else if (TextUtils.isEmpty(email)) {
                     Toast.makeText(SignUpActivity.this, "Please enter your full email", Toast.LENGTH_LONG).show();
                    emailEdit.setError("Email Required");
                     emailEdit.requestFocus();
-                    
+
                 } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                     Toast.makeText(SignUpActivity.this, "Please entter correct email in form example@domain.com", Toast.LENGTH_SHORT).show();
                     emailEdit.setError("Correct Email Required");
                     emailEdit.requestFocus();
-                    
 
+
+                } else if (!email.endsWith("csulb.edu")) {
+
+                    Toast.makeText(SignUpActivity.this, "Please use your csulb email", Toast.LENGTH_SHORT).show();
+                    emailEdit.setError("exampl@csulb.edu");
+                    emailEdit.requestFocus();
                 } else if (TextUtils.isEmpty(password)) {
                     Toast.makeText(SignUpActivity.this,"Password required", Toast.LENGTH_SHORT).show();
                     passwordEdit.setError("Enter password");
                     passwordEdit.requestFocus();
-                    
+
                 } else if (TextUtils.isEmpty(confirmPassword)) {
                     Toast.makeText(SignUpActivity.this,"Password required", Toast.LENGTH_SHORT).show();
                     confirmPasswordEdit.setError("Enter password");
