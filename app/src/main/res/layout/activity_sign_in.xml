@@ -46,23 +46,14 @@
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
-        android:onClick="click"
+        android:longClickable="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/email" />
+        app:layout_constraintTop_toBottomOf="@+id/email"
+        android:drawableRight="@drawable/baseline_visibility_off_24"/>
 
 
-
-    <ImageView
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        app:layout_constraintEnd_toEndOf="@id/password"
-        app:layout_constraintBottom_toBottomOf="@id/password"
-        android:layout_marginBottom="15dp"
-        android:id="@+id/showhidepassword"
-
-        ></ImageView>
 
 
 

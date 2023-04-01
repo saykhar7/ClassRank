@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,6 +22,8 @@ public class SignInActivity extends AppCompatActivity {
     private EditText emailEditText, passwordEditText;
     private ImageView showHidePassword;
 
+    private boolean passwordVisible;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,21 +34,34 @@ public class SignInActivity extends AppCompatActivity {
         emailEditText = findViewById(R.id.email);
         passwordEditText = findViewById(R.id.password);
 
-        //show hide password in signin
-        showHidePassword = findViewById(R.id.showhidepassword);
-        showHidePassword.setImageResource(R.drawable.eye_hide);
-        showHidePassword.setOnClickListener(new View.OnClickListener() {
+        passwordEditText.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View view) {
-                if(passwordEditText.getTransformationMethod().equals(HideReturnsTransformationMethod.getInstance())){
-                    passwordEditText.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                    showHidePassword.setImageResource(R.drawable.eye_hide);
-                }
-                else {
-                    passwordEditText.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-                    showHidePassword.setImageResource(R.drawable.eye_view);
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                final int Right = 2;
+                if(motionEvent.getAction()==MotionEvent.ACTION_UP)
+                {
+                    if(motionEvent.getRawX()>=passwordEditText.getRight()-passwordEditText.getCompoundDrawables()[Right].getBounds().width()){
+                        int selection = passwordEditText.getSelectionEnd();
+                        if(passwordVisible)
+                        {
+                            passwordEditText.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0, R.drawable.baseline_visibility_off_24,0);
+                            passwordEditText.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                            passwordVisible=false;
+                        }
+                        else {
+                            passwordEditText.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0, R.drawable.baseline_visibility_24,0);
+                            passwordEditText.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                            passwordVisible=true;
 
+                        }
+                    }
                 }
+
+
+
+
+
+                return false;
             }
         });
 
