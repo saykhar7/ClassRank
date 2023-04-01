@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
@@ -70,11 +71,11 @@ public class SignUpActivity extends AppCompatActivity {
                     emailEdit.requestFocus();
 
 
-                } else if (!email.endsWith("csulb.edu")) {
-
-                    Toast.makeText(SignUpActivity.this, "Please use your csulb email", Toast.LENGTH_SHORT).show();
-                    emailEdit.setError("exampl@csulb.edu");
-                    emailEdit.requestFocus();
+//                } else if (!email.endsWith("csulb.edu")) {
+//
+//                    Toast.makeText(SignUpActivity.this, "Please use your csulb email", Toast.LENGTH_SHORT).show();
+//                    emailEdit.setError("exampl@csulb.edu");
+//                    emailEdit.requestFocus();
                 } else if (TextUtils.isEmpty(password)) {
                     Toast.makeText(SignUpActivity.this,"Password required", Toast.LENGTH_SHORT).show();
                     passwordEdit.setError("Enter password");
@@ -125,6 +126,8 @@ public class SignUpActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
                         String userId = mAuth.getCurrentUser().getUid();
+                        FirebaseUser firebaseUser = mAuth.getCurrentUser();
+                        firebaseUser.sendEmailVerification();
                         saveUserDataToFirestore(userId, firstName, lastName, email);
                     } else {
                         if (task.getException() != null) {

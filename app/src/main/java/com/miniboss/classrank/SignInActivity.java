@@ -4,9 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
@@ -16,6 +19,7 @@ public class SignInActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private EditText emailEditText, passwordEditText;
+    private ImageView showHidePassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +30,24 @@ public class SignInActivity extends AppCompatActivity {
 
         emailEditText = findViewById(R.id.email);
         passwordEditText = findViewById(R.id.password);
+
+        //show hide password in signin
+        showHidePassword = findViewById(R.id.showhidepassword);
+        showHidePassword.setImageResource(R.drawable.eye_hide);
+        showHidePassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(passwordEditText.getTransformationMethod().equals(HideReturnsTransformationMethod.getInstance())){
+                    passwordEditText.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    showHidePassword.setImageResource(R.drawable.eye_hide);
+                }
+                else {
+                    passwordEditText.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    showHidePassword.setImageResource(R.drawable.eye_view);
+
+                }
+            }
+        });
 
         Button signInButton = findViewById(R.id.signInButton);
         signInButton.setOnClickListener(new View.OnClickListener() {
