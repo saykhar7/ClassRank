@@ -7,12 +7,28 @@
     android:background="#FFFFFF"
     tools:context=".MainActivity">
 
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@color/dark_orange"
+        android:dividerHeight="3dp"
+        app:layout_constraintBaseline_toTopOf="@id/viewPager"
+        android:layout_marginTop="15dp"
+        android:id="@+id/listMyCourses"></ListView>
+
+
+
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" >
+
+    </androidx.viewpager2.widget.ViewPager2>
+
+
+
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
@@ -23,5 +39,7 @@
         android:background="?android:attr/windowBackground"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/bottom_navigation_menu" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
