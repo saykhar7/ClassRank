@@ -79,9 +79,6 @@ public class HomeActivity extends AppCompatActivity implements HomeFragment.Home
                     return true;
                 case R.id.navigation_search:
                     viewPager.setCurrentItem(1);
-                    listView = findViewById(R.id.courseListView);
-                    ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, R.layout.fragment_search, R.id.courseTextView,courses );
-                    listView.setAdapter(arrayAdapter);
                     return true;
                 case R.id.navigation_profile:
                     viewPager.setCurrentItem(2);

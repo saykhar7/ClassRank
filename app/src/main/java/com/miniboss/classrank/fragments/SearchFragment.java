@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import com.miniboss.classrank.R;
 
@@ -15,6 +16,8 @@ public class SearchFragment extends Fragment {
     private TextView emailText;
 
     public SearchFragment() {
+
+
     }
 
     @Nullable
@@ -30,6 +33,10 @@ public class SearchFragment extends Fragment {
                 updateEmail(email);
             }
         }
+
+        listView = findViewById(R.id.courseListView);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, R.layout.fragment_search, R.id.courseTextView,courses );
+        listView.setAdapter(arrayAdapter);
 
         return view;
     }
