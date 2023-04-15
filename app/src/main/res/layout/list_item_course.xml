@@ -2,40 +2,51 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp">
 
     <RelativeLayout
         android:id="@+id/course_data_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:background="@drawable/course_item_background">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:text="Accountancy"
+            android:textColor="#152238"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/departName"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="departmentName" />
+        <TextView
+            android:id="@+id/classNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/name"
+            android:layout_marginStart="8dp"
+            android:text="101"
+            android:textColor="#152238"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/name"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="name" />
-
-            <TextView
-                android:id="@+id/classNumber"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="classNumber" />
-        </LinearLayout>
+        <TextView
+            android:id="@+id/departName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/name"
+            android:text="ACCT"
+            android:textColor="#757575"
+            android:textSize="14sp" />
     </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/dividerColor" />
 
     <RelativeLayout
         android:id="@+id/add_class_container"
@@ -49,6 +60,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="Add Class"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:textColor="#2a2a2a" />
     </RelativeLayout>
 </LinearLayout>
