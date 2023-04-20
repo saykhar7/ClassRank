@@ -41,6 +41,31 @@
             android:text="ACCT"
             android:textColor="#757575"
             android:textSize="14sp" />
+
+        <ImageView
+            android:id="@+id/teacher_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/professor_icon"
+            android:layout_toLeftOf="@+id/professorName"
+            android:layout_alignTop="@+id/professorName"
+            android:layout_marginRight="4dp"
+            android:adjustViewBounds="true"
+            android:maxWidth="16dp"
+            android:maxHeight="16dp" />
+
+        <TextView
+            android:id="@+id/professorName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/departName"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="8dp"
+            android:layout_below="@id/name"
+            android:text="Professor John Doe"
+            android:textColor="#757575"
+            android:textSize="14sp" />
+
     </RelativeLayout>
 
     <View

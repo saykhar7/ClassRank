@@ -145,6 +145,7 @@ public class SearchFragment extends Fragment {
                             courseList.clear();
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Course course = document.toObject(Course.class);
+                                course.setId(document.getId()); // Add this line to set the course ID
                                 courseList.add(course);
                             }
                             courseAdapter.notifyDataSetChanged();

@@ -1,11 +1,13 @@
 package com.miniboss.classrank.fragments;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
@@ -21,12 +23,24 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.UUID;
 public class AddClassDialogFragment extends DialogFragment {
     private static final String ARG_DEPARTMENTS = "departments";
     private List<Department> departmentList;
     private FirebaseFirestore db;
     private OnCourseAddedListener onCourseAddedListener;
+
+    private boolean isClassNumberValid(String input) {
+        return input.matches("\\d+");
+    }
+
+    private boolean isProfessorNameValid(String input) {
+        return input.matches("[a-zA-Z\\s]+");
+    }
+
+    private boolean isProfessorEmailValid(String input) {
+        return input.matches("[a-zA-Z0-9._%+-]+@csulb\\.edu");
+    }
 
     public AddClassDialogFragment() {
         // Required empty public constructor
@@ -67,18 +81,48 @@ public class AddClassDialogFragment extends DialogFragment {
         spinnerDepartments.setAdapter(adapter);
 
         EditText etClassNumber = view.findViewById(R.id.et_class_number);
+        EditText etProfessorName = view.findViewById(R.id.et_professor_name);
+        EditText etProfessorEmail = view.findViewById(R.id.et_professor_email);
 
         builder.setView(view)
-                .setPositiveButton("Add", (dialog, id) -> {
-                    Department selectedDepartment = (Department) spinnerDepartments.getSelectedItem();
+                .setPositiveButton("Add", null)
+                .setNegativeButton("Cancel", (dialog, id) -> {
+                    // User cancelled the dialog
+                });
 
-                    String departmentName = selectedDepartment.getDepartmentName();
-                    String departmentShortName = selectedDepartment.getDept_name_short();
-                    int classNumber = Integer.parseInt(etClassNumber.getText().toString());
+        AlertDialog alertDialog = builder.create();
+        alertDialog.setOnShowListener(dialog -> {
+            Button positiveButton = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
+            positiveButton.setOnClickListener(v -> {
+                Department selectedDepartment = (Department) spinnerDepartments.getSelectedItem();
+                String departmentName = selectedDepartment.getDepartmentName();
+                String departmentShortName = selectedDepartment.getDept_name_short();
 
-                    // Create a new course object
-                    Course newCourse = new Course(departmentName, departmentShortName, classNumber);
+                String classNumberStr = etClassNumber.getText().toString();
+                String professorName = etProfessorName.getText().toString();
+                String professorEmail = etProfessorEmail.getText().toString();
 
+                boolean isValidInput = true;
+
+                if (!isClassNumberValid(classNumberStr)) {
+                    etClassNumber.setError("Invalid class number");
+                    isValidInput = false;
+                }
+
+                if (!isProfessorNameValid(professorName)) {
+                    etProfessorName.setError("Invalid professor name");
+                    isValidInput = false;
+                }
+
+                if (!isProfessorEmailValid(professorEmail)) {
+                    etProfessorEmail.setError("Invalid email format");
+                    isValidInput = false;
+                }
+
+                if (isValidInput) {
+                    int classNumber = Integer.parseInt(classNumberStr);
+                    String courseId = UUID.randomUUID().toString();
+                    Course newCourse = new Course(courseId, departmentName, departmentShortName, classNumber, professorName, professorEmail);
                     // Save the new course to the database
                     db.collection("Courses")
                             .add(newCourse)
@@ -89,11 +133,12 @@ public class AddClassDialogFragment extends DialogFragment {
                                 }
                             })
                             .addOnFailureListener(e -> Log.w("AddClassDialogFragment", "Error adding document", e));
-                })
-                .setNegativeButton("Cancel", (dialog, id) -> {
-                    // User cancelled the dialog
-                });
 
-        return builder.create();
+                    alertDialog.dismiss();
+                }
+            });
+        });
+
+        return alertDialog;
     }
 }

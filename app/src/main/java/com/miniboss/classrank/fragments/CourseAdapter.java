@@ -1,6 +1,7 @@
 package com.miniboss.classrank.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.miniboss.classrank.HomeActivity;
 import com.miniboss.classrank.R;
 import com.miniboss.classrank.model.Department;
 
@@ -38,17 +41,20 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        Course course;
         if (showAddClassOption && position == getItemCount() - 1) {
             holder.addClassContainer.setVisibility(View.VISIBLE);
             holder.courseDataContainer.setVisibility(View.GONE);
+            course = null;
         } else {
             holder.addClassContainer.setVisibility(View.GONE);
             holder.courseDataContainer.setVisibility(View.VISIBLE);
 
-            Course course = courseList.get(position);
+            course = courseList.get(position);
             holder.departName.setText(course.getDepartmentName());
             holder.name.setText(course.getDepartmentShortName());
             holder.classNumber.setText(String.valueOf(course.getClassNumber()));
+            holder.professorName.setText(course.getProfessorName());
         }
 
         holder.textAddClass.setOnClickListener(v -> {
@@ -61,6 +67,19 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.ViewHolder
             }
         });
         Log.d("CourseAdapter", "Department list size: " + departmentList.size());
+        holder.courseDataContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (course != null) {
+                    Intent intent = new Intent(v.getContext(), com.miniboss.classrank.CourseRatingsActivity.class);
+                    intent.putExtra("course_id", course.getId());
+                    intent.putExtra("class_number", course.getClassNumber());
+                    intent.putExtra("department_name_short", course.getDepartmentShortName());
+                    intent.putExtra("professor_name", course.getProfessorName());
+                    v.getContext().startActivity(intent);
+                }
+            }
+        });
     }
 
     @Override
@@ -75,7 +94,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.ViewHolder
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView departName, name, classNumber, textAddClass;
+        TextView departName, name, classNumber, textAddClass, professorName;
         RelativeLayout addClassContainer, courseDataContainer;
 
         public ViewHolder(@NonNull View itemView) {
@@ -84,6 +103,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.ViewHolder
             departName = itemView.findViewById(R.id.departName);
             name = itemView.findViewById(R.id.name);
             classNumber = itemView.findViewById(R.id.classNumber);
+            professorName = itemView.findViewById(R.id.professorName);
 
             addClassContainer = itemView.findViewById(R.id.add_class_container);
             courseDataContainer = itemView.findViewById(R.id.course_data_container);

@@ -9,4 +9,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="dark_orange">#FF8C00</color>
     <color name="dividerColor">#A5A5A5</color>
+    <color name="blue">#2196F3</color>
+    <color name="gray">#808080</color>
+
+
 </resources>

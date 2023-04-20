@@ -1,21 +1,33 @@
 package com.miniboss.classrank;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.Fragment;
 import androidx.annotation.NonNull;
+
+import android.media.Rating;
 import android.os.Bundle;
 import android.content.Intent;
+import android.view.View;
+import android.widget.Button;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.miniboss.classrank.fragments.CourseRating;
 import com.miniboss.classrank.fragments.HomeFragment;
 import com.miniboss.classrank.fragments.ProfileFragment;
+import com.miniboss.classrank.fragments.RatingsAdapter;
 import com.miniboss.classrank.fragments.SearchFragment;
 import com.miniboss.classrank.fragments.Course;
 import com.miniboss.classrank.fragments.AddClassDialogFragment;
+
+import java.util.Arrays;
+import java.util.List;
+
 public class HomeActivity extends AppCompatActivity implements HomeFragment.HomeController, ProfileFragment.OnLogoutClickListener, AddClassDialogFragment.OnCourseAddedListener {
     private FirebaseFirestore mFirestore;
     private FirebaseAuth mAuth;
@@ -123,4 +135,34 @@ public class HomeActivity extends AppCompatActivity implements HomeFragment.Home
         }
     }
 
+    public static class CourseRatingsActivity extends AppCompatActivity {
+
+        private RecyclerView ratingsRecyclerView;
+        private Button rateCommentButton;
+
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_course_ratings);
+
+            ratingsRecyclerView = findViewById(R.id.ratingsRecyclerView);
+//            rateCommentButton = findViewById(R.id.rateCommentButton);
+
+            ratingsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+            // Replace SampleRatingsAdapter with the actual adapter for your ratings list
+            ratingsRecyclerView.setAdapter(new RatingsAdapter(this, getSampleRatings()));
+
+            rateCommentButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Implement your Rate/Comment functionality here
+                }
+            });
+        }
+
+        private List<CourseRating> getSampleRatings() {
+            // Replace with a function to fetch real ratings from your data source
+            return Arrays.asList();
+        }
+    }
 }
