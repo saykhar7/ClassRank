@@ -150,7 +150,8 @@ public class HomeActivity extends AppCompatActivity implements HomeFragment.Home
 
             ratingsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
             // Replace SampleRatingsAdapter with the actual adapter for your ratings list
-            ratingsRecyclerView.setAdapter(new RatingsAdapter(this, getSampleRatings()));
+            String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            ratingsRecyclerView.setAdapter(new RatingsAdapter(this, getSampleRatings(), currentUserId));
 
             rateCommentButton.setOnClickListener(new View.OnClickListener() {
                 @Override

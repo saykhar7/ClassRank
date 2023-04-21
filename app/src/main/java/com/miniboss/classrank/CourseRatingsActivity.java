@@ -49,7 +49,7 @@ public class CourseRatingsActivity extends AppCompatActivity {
 
     private TextView averageRating;
     private TextView totalRatingsCount;
-    @Override
+    private TextView noReviewsMessage;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_ratings);
@@ -68,6 +68,7 @@ public class CourseRatingsActivity extends AppCompatActivity {
         courseId = getIntent().getStringExtra("course_id");
         fetchUserRating(courseId);
         fetchAllRatings(courseId);
+        noReviewsMessage = findViewById(R.id.noReviewsMessage);
 
         favoriteButton = findViewById(R.id.favoriteButton);
         favoriteButton.setOnClickListener(v -> toggleFavorite());
@@ -81,6 +82,13 @@ public class CourseRatingsActivity extends AppCompatActivity {
         String deptNameShortString = getIntent().getStringExtra("department_name_short");
         String professorNameString = getIntent().getStringExtra("professor_name");
 
+        if (classNumberValue != -1 && deptNameShortString != null) {
+            String toolbarTitle = deptNameShortString + " " + classNumberValue;
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().setTitle(toolbarTitle);
+            }
+        }
+
         if (classNumberValue != -1) {
             String classNumberString = String.valueOf(classNumberValue);
             classNumber.setText(classNumberString);
@@ -89,8 +97,8 @@ public class CourseRatingsActivity extends AppCompatActivity {
         professorName.setText(professorNameString);
 
         ratingsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        ratingsRecyclerView.setAdapter(new RatingsAdapter(this, getSampleRatings()));
-
+        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        ratingsRecyclerView.setAdapter(new RatingsAdapter(this, getSampleRatings(), currentUserId));
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -170,25 +178,32 @@ public class CourseRatingsActivity extends AppCompatActivity {
                 .whereEqualTo("courseId", courseId)
                 .get()
                 .addOnCompleteListener(task -> {
-                    if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                    if (task.isSuccessful()) {
                         List<CourseRating> ratingsList = task.getResult().toObjects(CourseRating.class);
 
-                        // Calculate the average rating
-                        float totalRating = 0;
-                        for (CourseRating rating : ratingsList) {
-                            totalRating += rating.getRating();
+                        if (!ratingsList.isEmpty()) {
+                            // Calculate the average rating
+                            float totalRating = 0;
+                            for (CourseRating rating : ratingsList) {
+                                totalRating += rating.getRating();
+                            }
+                            float averageRatingValue = totalRating / ratingsList.size();
+                            String averageRatingText = String.format("%.1f/5", averageRatingValue);
+                            averageRating.setText(averageRatingText);
+
+                            // Display the total ratings count
+                            String totalRatingsCountText = String.format("%d Ratings", ratingsList.size());
+                            totalRatingsCount.setText(totalRatingsCountText);
+
+                            // Display the ratings, and pass the userId
+                            RatingsAdapter ratingsAdapter = new RatingsAdapter(this, ratingsList, userId);
+                            ratingsRecyclerView.setAdapter(ratingsAdapter);
+                        } else {
+                            // Display "0 Ratings", "0/5" and "Be the first one to review..."
+                            totalRatingsCount.setText("0 Ratings");
+                            averageRating.setText("0.0/5");
+                            noReviewsMessage.setVisibility(View.VISIBLE);
                         }
-                        float averageRatingValue = totalRating / ratingsList.size();
-                        String averageRatingText = String.format("%.1f/5", averageRatingValue);
-                        averageRating.setText(averageRatingText);
-
-                        // Display the total ratings count
-                        String totalRatingsCountText = String.format("%d Ratings", ratingsList.size());
-                        totalRatingsCount.setText(totalRatingsCountText);
-
-                        // Display the ratings
-                        RatingsAdapter ratingsAdapter = new RatingsAdapter(this, ratingsList);
-                        ratingsRecyclerView.setAdapter(ratingsAdapter);
                     }
                 });
     }

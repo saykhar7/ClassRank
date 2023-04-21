@@ -80,7 +80,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp">
+            android:padding="8dp">
 
             <TextView
                 android:id="@+id/professorName"
@@ -111,8 +111,17 @@
             android:id="@+id/ratingsRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp" />
+            android:layout_marginTop="16dp"
+            android:background="@drawable/border" />
 
+        <TextView
+            android:id="@+id/noReviewsMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Be the first one to review this class."
+            android:textSize="16sp"
+            android:layout_gravity="center"
+            android:visibility="gone"/>
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
