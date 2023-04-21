@@ -1,4 +1,4 @@
-package com.miniboss.classrank.model;
+package com.miniboss.classrank.fragments;
 
 public class Department {
     private String id;

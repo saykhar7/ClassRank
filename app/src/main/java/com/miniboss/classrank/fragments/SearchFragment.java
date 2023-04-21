@@ -14,10 +14,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.miniboss.classrank.R;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.miniboss.classrank.model.Department;
+//import com.miniboss.classrank.model.Department;
+import com.miniboss.classrank.fragments.Department;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -133,28 +136,51 @@ public class SearchFragment extends Fragment {
 
     public void fetchCourses() {
         swipeRefreshLayout.setRefreshing(true); // Show loading indicator
-        departmentFetcher.fetchDepartments(departments -> {
-            departmentList.clear();
-            departmentList.addAll(departments);
-            courseAdapter.notifyDataSetChanged();
 
-            db.collection("Courses")
-                    .get()
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            courseList.clear();
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Course course = document.toObject(Course.class);
-                                course.setId(document.getId()); // Add this line to set the course ID
-                                courseList.add(course);
-                            }
-                            courseAdapter.notifyDataSetChanged();
-                            swipeRefreshLayout.setRefreshing(false); // Hide loading indicator
-                        } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
-                            swipeRefreshLayout.setRefreshing(false); // Hide loading indicator
+        // Assign a unique userId
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        // Fetch user's favorites
+        db.collection("Favorites")
+                .whereEqualTo("userId", userId)
+                .get()
+                .addOnCompleteListener(favoriteTask -> {
+                    if (favoriteTask.isSuccessful()) {
+                        List<String> favoriteCourseIds = new ArrayList<>();
+                        for (DocumentSnapshot document : favoriteTask.getResult()) {
+                            favoriteCourseIds.add(document.getString("courseId"));
                         }
-                    });
-        });
+
+                        departmentFetcher.fetchDepartments(departments -> {
+                            departmentList.clear();
+                            departmentList.addAll(departments);
+                            courseAdapter.notifyDataSetChanged();
+
+                            db.collection("Courses")
+                                    .get()
+                                    .addOnCompleteListener(courseTask -> {
+                                        if (courseTask.isSuccessful()) {
+                                            courseList.clear();
+                                            for (QueryDocumentSnapshot courseDocument : courseTask.getResult()) {
+                                                Course course = courseDocument.toObject(Course.class);
+                                                course.setId(courseDocument.getId()); // Set the course ID
+
+                                                // Set favorited property based on user's favorites
+                                                if (favoriteCourseIds.contains(course.getId())) {
+                                                    course.setFavorited(true);
+                                                }
+
+                                                courseList.add(course);
+                                            }
+                                            courseAdapter.notifyDataSetChanged();
+                                            swipeRefreshLayout.setRefreshing(false); // Hide loading indicator
+                                        } else {
+                                            Log.d(TAG, "Error getting documents: ", courseTask.getException());
+                                            swipeRefreshLayout.setRefreshing(false); // Hide loading indicator
+                                        }
+                                    });
+                        });
+                    }
+                });
     }
 }

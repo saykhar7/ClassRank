@@ -9,6 +9,7 @@ public class Course {
     private int class_number;
     private String professorName;
     private String professorEmail;
+    private boolean favorited;
 
     private String id;
 
@@ -24,15 +25,22 @@ public class Course {
         // Empty constructor needed for Firestore
     }
 
-    public Course(String id, String department_name, String dept_short_name, int class_number, String professorName, String professorEmail) {
+    public Course(String id, String department_name, String dept_short_name, int class_number, String professorName, String professorEmail, boolean favorited) {
         this.id = id;
         this.department_name = department_name;
         this.dept_short_name = dept_short_name;
         this.class_number = class_number;
         this.professorName = professorName;
         this.professorEmail = professorEmail;
+        this.favorited = favorited;
+    }
+    public boolean isFavorited() {
+        return favorited;
     }
 
+    public void setFavorited(boolean favorited) {
+        this.favorited = favorited;
+    }
     @PropertyName("department_name")
     public String getDepartmentName() {
         return department_name;

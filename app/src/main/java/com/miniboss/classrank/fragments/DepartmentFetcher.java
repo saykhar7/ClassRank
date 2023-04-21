@@ -2,7 +2,8 @@ package com.miniboss.classrank.fragments;
 
 import android.util.Log;
 import com.miniboss.classrank.api.DepartmentService;
-import com.miniboss.classrank.model.Department;
+//import com.miniboss.classrank.model.Department;
+import com.miniboss.classrank.fragments.Department;
 
 import java.util.List;
 

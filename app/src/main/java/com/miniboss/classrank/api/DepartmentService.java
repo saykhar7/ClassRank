@@ -1,6 +1,7 @@
 package com.miniboss.classrank.api;
 
-import com.miniboss.classrank.model.Department;
+//import com.miniboss.classrank.model.Department;
+import com.miniboss.classrank.fragments.Department;
 
 import java.util.List;
 

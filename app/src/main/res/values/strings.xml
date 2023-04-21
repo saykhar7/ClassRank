@@ -5,4 +5,6 @@
     <string name="select_department">Select Department</string>
     <string name="class_number">Class Number</string>
     <string name="rate_comment">Rate/Comment</string>
+    <string name="favorite_icon">Favorite icon</string>
+
 </resources>

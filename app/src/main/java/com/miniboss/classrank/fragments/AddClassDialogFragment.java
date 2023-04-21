@@ -17,7 +17,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
 import com.miniboss.classrank.R;
-import com.miniboss.classrank.model.Department;
+//import com.miniboss.classrank.model.Department;
+import com.miniboss.classrank.fragments.Department;
 import com.miniboss.classrank.fragments.Course;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -122,7 +123,7 @@ public class AddClassDialogFragment extends DialogFragment {
                 if (isValidInput) {
                     int classNumber = Integer.parseInt(classNumberStr);
                     String courseId = UUID.randomUUID().toString();
-                    Course newCourse = new Course(courseId, departmentName, departmentShortName, classNumber, professorName, professorEmail);
+                    Course newCourse = new Course(courseId, departmentName, departmentShortName, classNumber, professorName, professorEmail, true);
                     // Save the new course to the database
                     db.collection("Courses")
                             .add(newCourse)

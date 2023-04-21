@@ -7,10 +7,12 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.miniboss.classrank.fragments.CourseRating;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,12 +20,16 @@ import com.miniboss.classrank.R;
 import com.miniboss.classrank.fragments.Course;
 import com.miniboss.classrank.fragments.RatingsAdapter;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.Timestamp;
 
@@ -35,7 +41,14 @@ public class CourseRatingsActivity extends AppCompatActivity {
     private EditText commentEditText;
     private Button submitButton;
     private FirebaseFirestore db;
+    private ImageButton favoriteButton;
+    private boolean isFavorited = false;
+    private String favoriteId;
+    private String userId;
+    private String courseId;
 
+    private TextView averageRating;
+    private TextView totalRatingsCount;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,9 +63,19 @@ public class CourseRatingsActivity extends AppCompatActivity {
         ratingBar = findViewById(R.id.ratingBar);
         commentEditText = findViewById(R.id.commentEditText);
         submitButton = findViewById(R.id.submitButton);
-        String courseId = getIntent().getStringExtra("course_id");
+        averageRating = findViewById(R.id.averageRating);
+        totalRatingsCount = findViewById(R.id.totalRatingsCount);
+        courseId = getIntent().getStringExtra("course_id");
         fetchUserRating(courseId);
         fetchAllRatings(courseId);
+
+        favoriteButton = findViewById(R.id.favoriteButton);
+        favoriteButton.setOnClickListener(v -> toggleFavorite());
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         int classNumberValue = getIntent().getIntExtra("class_number", -1);
         String deptNameShortString = getIntent().getStringExtra("department_name_short");
@@ -98,13 +121,21 @@ public class CourseRatingsActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
     private List<CourseRating> getSampleRatings() {
         // Replace with a function to fetch real ratings from your data source
         return Arrays.asList();
     }
 
     private void fetchUserRating(String courseId) {
-        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         db.collection("Ratings")
                 .whereEqualTo("courseId", courseId)
@@ -130,20 +161,84 @@ public class CourseRatingsActivity extends AppCompatActivity {
     }
 
     private void fetchAllRatings(String courseId) {
-        RecyclerView ratingsRecyclerView = findViewById(R.id.ratingsRecyclerView); // Use correct id
+        RecyclerView ratingsRecyclerView = findViewById(R.id.ratingsRecyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         ratingsRecyclerView.setLayoutManager(layoutManager);
 
+        checkIfFavorited(courseId, userId);
         db.collection("Ratings")
                 .whereEqualTo("courseId", courseId)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful() && !task.getResult().isEmpty()) {
                         List<CourseRating> ratingsList = task.getResult().toObjects(CourseRating.class);
+
+                        // Calculate the average rating
+                        float totalRating = 0;
+                        for (CourseRating rating : ratingsList) {
+                            totalRating += rating.getRating();
+                        }
+                        float averageRatingValue = totalRating / ratingsList.size();
+                        String averageRatingText = String.format("%.1f/5", averageRatingValue);
+                        averageRating.setText(averageRatingText);
+
+                        // Display the total ratings count
+                        String totalRatingsCountText = String.format("%d Ratings", ratingsList.size());
+                        totalRatingsCount.setText(totalRatingsCountText);
+
+                        // Display the ratings
                         RatingsAdapter ratingsAdapter = new RatingsAdapter(this, ratingsList);
                         ratingsRecyclerView.setAdapter(ratingsAdapter);
                     }
                 });
     }
-}
+    private void checkIfFavorited(String courseId, String userId) {
+        db.collection("Favorites")
+                .whereEqualTo("userId", userId)
+                .whereEqualTo("courseId", courseId)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                        isFavorited = true;
+                        favoriteId = task.getResult().getDocuments().get(0).getId();
+                        favoriteButton.setImageResource(R.drawable.ic_star_filled);
+                    } else {
+                        isFavorited = false;
+                        favoriteButton.setImageResource(R.drawable.ic_star_border);
+                    }
+                });
+    }
 
+    private void toggleFavorite() {
+        if (isFavorited) {
+            removeFromFavorites();
+        } else {
+            addToFavorites();
+        }
+    }
+
+    private void addToFavorites() {
+        Map<String, Object> favorite = new HashMap<>();
+        favorite.put("userId", userId);
+        favorite.put("courseId", courseId);
+
+        db.collection("Favorites")
+                .add(favorite)
+                .addOnSuccessListener(documentReference -> {
+                    favoriteId = documentReference.getId();
+                    isFavorited = true;
+                    favoriteButton.setImageResource(R.drawable.ic_star_filled);
+                });
+    }
+
+    private void removeFromFavorites() {
+        if (favoriteId != null) {
+            db.collection("Favorites").document(favoriteId)
+                    .delete()
+                    .addOnSuccessListener(aVoid -> {
+                        isFavorited = false;
+                        favoriteButton.setImageResource(R.drawable.ic_star_border);
+                    });
+        }
+    }
+}
