@@ -21,8 +21,10 @@ import com.miniboss.classrank.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.ViewHolder> {
+    private Set<String> favoriteCourseIds;
 
     private List<Course> courseList;
     private List<Department> departmentList;

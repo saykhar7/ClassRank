@@ -168,6 +168,8 @@ public class SearchFragment extends Fragment {
                                                 // Set favorited property based on user's favorites
                                                 if (favoriteCourseIds.contains(course.getId())) {
                                                     course.setFavorited(true);
+                                                } else {
+                                                    course.setFavorited(false);
                                                 }
 
                                                 courseList.add(course);

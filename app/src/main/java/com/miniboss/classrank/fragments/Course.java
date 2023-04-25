@@ -34,10 +34,12 @@ public class Course {
         this.professorEmail = professorEmail;
         this.favorited = favorited;
     }
+    @PropertyName("favorited")
     public boolean isFavorited() {
         return favorited;
     }
 
+    @PropertyName("favorited")
     public void setFavorited(boolean favorited) {
         this.favorited = favorited;
     }
