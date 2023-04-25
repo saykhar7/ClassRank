@@ -61,16 +61,30 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.ViewHolder
             holder.classNumber.setText(String.valueOf(course.getClassNumber()));
             holder.professorName.setText(course.getProfessorName());
         }
-        Log.d("CourseAdapter", "Course favorited: " + course.isFavorited());
-        if (course != null && course.isFavorited()) {
-            holder.favoriteIcon.setImageDrawable(starFilledDrawable);
-            holder.favoriteIcon.setVisibility(View.VISIBLE);
+        if (course != null) {
+            Boolean isFavorited = course.isFavorited();
+            Log.d("CourseAdapter", "Course favorited: " + isFavorited);
+            if (isFavorited != null && isFavorited) {
+                holder.favoriteIcon.setImageDrawable(starFilledDrawable);
+                holder.favoriteIcon.setVisibility(View.VISIBLE);
+            } else {
+                holder.favoriteIcon.setVisibility(View.GONE);
+            }
         } else {
             holder.favoriteIcon.setVisibility(View.GONE);
         }
 
         final Course currentCourse = course;
 
+        holder.textAddClass.setOnClickListener(v -> {
+            FragmentActivity fragmentActivity = (FragmentActivity) v.getContext();
+            if (fragmentActivity instanceof AddClassDialogFragment.OnCourseAddedListener) {
+                AddClassDialogFragment addClassDialog = AddClassDialogFragment.newInstance(new ArrayList<>(departmentList), (AddClassDialogFragment.OnCourseAddedListener) fragmentActivity);
+                addClassDialog.show(fragmentActivity.getSupportFragmentManager(), "AddClassDialog");
+            } else {
+                Log.e("CourseAdapter", "FragmentActivity must implement OnCourseAddedListener");
+            }
+        });
         holder.courseDataContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
