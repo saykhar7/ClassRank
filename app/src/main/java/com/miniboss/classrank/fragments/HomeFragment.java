@@ -26,16 +26,14 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         firstNameText = view.findViewById(R.id.firstNameText);
-        lastNameText = view.findViewById(R.id.lastNameText);
+      //  lastNameText = view.findViewById(R.id.lastNameText);
         return view;
     }
 
     public void updateNames(String firstName, String lastName) {
         if (firstNameText != null) {
-            firstNameText.setText(firstName);
+            firstNameText.setText("Welcome " + firstName+ " "+ lastName);
         }
-        if (lastNameText != null) {
-            lastNameText.setText(lastName);
-        }
+
     }
 }
