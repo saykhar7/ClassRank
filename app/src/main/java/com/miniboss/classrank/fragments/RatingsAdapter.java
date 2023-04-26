@@ -63,6 +63,8 @@ public class RatingsAdapter extends RecyclerView.Adapter<RatingsAdapter.RatingVi
             userName = "You";
             holder.ratingCardLayout.setBackgroundResource(R.drawable.highlighted_rating_border);
         } else {
+            userName = userName.length() >= 8 ? userName.substring(0, 8) : userName;
+//            userName = "Anonymous";
             holder.ratingCardLayout.setBackgroundResource(0); // reset the background
         }
 
