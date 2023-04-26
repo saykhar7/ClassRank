@@ -100,6 +100,7 @@ public class CourseRatingsActivity extends AppCompatActivity {
         String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         ratingsRecyclerView.setAdapter(new RatingsAdapter(this, getSampleRatings(), currentUserId));
         // In the onClick method of the submit button
+        // In the onClick method of the submit button
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -112,6 +113,9 @@ public class CourseRatingsActivity extends AppCompatActivity {
 
                 String documentId = (String) submitButton.getTag();
 
+                // Disable the submitButton
+                submitButton.setEnabled(false);
+
                 if (documentId != null) {
                     // Update existing rating
                     db.collection("Ratings")
@@ -120,8 +124,14 @@ public class CourseRatingsActivity extends AppCompatActivity {
                             .addOnSuccessListener(aVoid -> {
                                 Toast.makeText(CourseRatingsActivity.this, "Updated", Toast.LENGTH_SHORT).show();
                                 refreshView(); // Refresh the view
+                                // Enable the submitButton
+                                submitButton.setEnabled(true);
                             })
-                            .addOnFailureListener(e -> Log.w("CourseRatingsActivity", "Error updating document", e));
+                            .addOnFailureListener(e -> {
+                                Log.w("CourseRatingsActivity", "Error updating document", e);
+                                // Enable the submitButton
+                                submitButton.setEnabled(true);
+                            });
                 } else {
                     // Save a new rating
                     db.collection("Ratings")
@@ -129,8 +139,14 @@ public class CourseRatingsActivity extends AppCompatActivity {
                             .addOnSuccessListener(documentReference -> {
                                 Toast.makeText(CourseRatingsActivity.this, "Submitted", Toast.LENGTH_SHORT).show();
                                 refreshView(); // Refresh the view
+                                // Enable the submitButton
+                                submitButton.setEnabled(true);
                             })
-                            .addOnFailureListener(e -> Log.w("CourseRatingsActivity", "Error adding document", e));
+                            .addOnFailureListener(e -> {
+                                Log.w("CourseRatingsActivity", "Error adding document", e);
+                                // Enable the submitButton
+                                submitButton.setEnabled(true);
+                            });
 
                 }
             }
