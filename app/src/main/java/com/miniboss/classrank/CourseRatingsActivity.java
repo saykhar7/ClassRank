@@ -99,6 +99,7 @@ public class CourseRatingsActivity extends AppCompatActivity {
         ratingsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         ratingsRecyclerView.setAdapter(new RatingsAdapter(this, getSampleRatings(), currentUserId));
+        // In the onClick method of the submit button
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,17 +117,28 @@ public class CourseRatingsActivity extends AppCompatActivity {
                     db.collection("Ratings")
                             .document(documentId)
                             .set(courseRating)
-                            .addOnSuccessListener(aVoid -> Toast.makeText(CourseRatingsActivity.this, "Updated", Toast.LENGTH_SHORT).show())
+                            .addOnSuccessListener(aVoid -> {
+                                Toast.makeText(CourseRatingsActivity.this, "Updated", Toast.LENGTH_SHORT).show();
+                                refreshView(); // Refresh the view
+                            })
                             .addOnFailureListener(e -> Log.w("CourseRatingsActivity", "Error updating document", e));
                 } else {
                     // Save a new rating
                     db.collection("Ratings")
                             .add(courseRating)
-                            .addOnSuccessListener(documentReference -> Toast.makeText(CourseRatingsActivity.this, "Submitted", Toast.LENGTH_SHORT).show())
+                            .addOnSuccessListener(documentReference -> {
+                                Toast.makeText(CourseRatingsActivity.this, "Submitted", Toast.LENGTH_SHORT).show();
+                                refreshView(); // Refresh the view
+                            })
                             .addOnFailureListener(e -> Log.w("CourseRatingsActivity", "Error adding document", e));
+
                 }
             }
         });
+    }
+    private void refreshView() {
+        fetchUserRating(courseId);
+        fetchAllRatings(courseId);
     }
 
     @Override
