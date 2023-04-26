@@ -116,7 +116,13 @@ public class SearchFragment extends Fragment {
                     filteredCourseList.addAll(courseList);
                 } else {
                     for (Course course : courseList) {
-                        if (course.matchesQuery(newText)) {
+                        String departmentName = course.getDepartmentName();
+                        boolean isDepartmentMatching = departmentName != null && departmentName.toLowerCase().contains(newText.toLowerCase());
+
+                        if (course.matchesQuery(newText)
+                                || course.getProfessorName().toLowerCase().contains(newText.toLowerCase())
+                                || isDepartmentMatching) {
+
                             filteredCourseList.add(course);
                         }
                     }
