@@ -14,7 +14,7 @@ This app has been built and signed directly from Android Studio and has not been
 
 ## Installing the App
 
-1. Download the APK file for the app from the [release section of GitHub](https://github.com/username/repo/releases).
+1. Download the APK file for the app from the [release section of GitHub](https://github.com/saykhar7/ClassRank/releases/tag/AppBuilds).
 2. Open the "Downloads" app on your device.
 3. Locate the APK file and tap on it to begin the installation process.
 4. If a warning message appears, tap on "Install anyway" to proceed with the installation.
