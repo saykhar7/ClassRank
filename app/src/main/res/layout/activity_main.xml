@@ -23,14 +23,25 @@
 
         <Button
             android:id="@+id/signInButton"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Sign In" />
+            android:text="Sign In"
+            android:textStyle="bold"
+            android:fontFamily="@font/power"
+android:layout_marginLeft="50sp"
+            android:layout_marginRight="50sp"
+            android:background="#70e000"/>
 
         <Button
             android:id="@+id/signUpButton"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="#FE5F00"
+            android:fontFamily="@font/power"
+            android:textStyle="bold"
+            android:layout_marginTop="20sp"
+            android:layout_marginLeft="50sp"
+            android:layout_marginRight="50sp"
             android:text="Sign Up" />
 
     </LinearLayout>

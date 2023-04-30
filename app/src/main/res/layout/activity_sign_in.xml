@@ -4,13 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
+    android:background="@drawable/back_1"
     tools:context=".SignInActivity">
  <TextView
         android:id="@+id/signInText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="64dp"
+     android:fontFamily="@font/boba"
         android:text="Sign In"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -99,7 +100,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="Sign Up"
-            android:textColor="#2196F3"
+            android:textStyle="bold"
+            android:textColor="#6e44ff"
             android:textSize="18sp" />
     </LinearLayout>
 
