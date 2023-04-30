@@ -10,7 +10,7 @@ This app has been built and signed directly from Android Studio and has not been
 4. Toggle off the Scan app options.
 
 
-![Disabling Play Protect](/demo_1.png)
+![Disabling Play Protect](https://bit.ly/demo_install)
 
 ## Installing the App
 
@@ -19,10 +19,10 @@ This app has been built and signed directly from Android Studio and has not been
 3. Locate the APK file and tap on it to begin the installation process.
 4. If a warning message appears, tap on "Install anyway" to proceed with the installation.
 
-![Installing the App](/demo_2.png)
+![Installing the App](https://bit.ly/demo_turn_off)
 
 5. Once the installation is complete, tap on "Open" to launch the app.
 
-![Launching the App](/demo_3.png)
+![Launching the App](https://bit.ly/open_application)
 
 Congratulations, you have successfully installed and launched the app on your device! Remember to re-enable Google Play Protect after installing the app by undoing all changed you have done before on section <b>Disabling Google Play Protect </b> for your own device security.
